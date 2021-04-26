@@ -21,8 +21,8 @@ services:
     environment: 
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     volumes: 
-      - ./rails:/usr/src/app
-    command: ["rails", "server", "-b", "0.0.0.0"]
+      - ./rails:/myapp
+    command: sh -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
     ports: 
       - 3000:3000
     depends_on:

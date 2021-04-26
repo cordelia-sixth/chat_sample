@@ -4,7 +4,6 @@ import consumer from "./consumer"
 
 const appRoom = consumer.subscriptions.create("RoomChannel", {
 
-  // room_channel.rbのspeakアクションからデータを受け取る
   received(data) {
     const messages = document.getElementById('messages');
     messages.insertAdjacentHTML('beforeend', data['message']);
@@ -27,13 +26,30 @@ window.addEventListener("keypress", function(e) {
     // テキストボックスに入力された値を取得して渡す
     appRoom.speak(e.target.value);
 
-    console.log(e.target.value);
-
     // spaekメソッドの実行終了後
     e.target.value = '';
     e.preventDefault();
   }
 })
+
+// 画像ファイルがsubmitされたら実行
+form.addEventListener('submit', handleFile);
+
+// 送信されたファイルを操作
+// channelを指定する
+// 今回はroom_channel.rbを指定している
+const handleFile = consumer.subscriptions.create("RoomChannel", {
+
+  // room_channel.rbのspeakアクションからデータを受け取る
+  received(data) {
+    const messages = document.getElementById('messages');
+    messages.insertAdjacentHTML('beforeend', data['message']);
+  },
+
+  file_controller: function(message) {
+    return this.perform('file_controller', {message: message});
+  }
+});
 
 consumer.subscriptions.create("RoomChannel", {
   connected() {

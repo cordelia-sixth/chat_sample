@@ -1,8 +1,22 @@
 <h1>Chat room</h1>
 <div id="messages">
+  <%# _messages.html.erbを呼び出す %>
   <%= render @messages %>
 </div>
+
+<% @img_paths.each do |img_path| %>
+  <div>
+    <img src="http://localhost:3000/<%= img_path %>">
+  </div>
+<% end %>
+
 <form>
   <label>Let's Chat:</label><br>
   <input type="text" data-behavior="room_speaker">
 </form>
+
+<%= form_tag '/fileuploads', method: 'post', multipart: true do %>
+  <%= file_field :fileupload, :file, class: :file_uploader %>
+  <br>
+  <%= submit_tag 'Send' %>
+<% end %>

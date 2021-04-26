@@ -2,10 +2,10 @@ FROM ruby:2.7.1-alpine3.11
 
 ENV BUNDLER_VERSION=2.1.4
 
-WORKDIR /usr/src/app
+WORKDIR /myapp
 
-COPY Gemfile .
-COPY Gemfile.lock .
+COPY Gemfile /myapp/Gemfile
+COPY Gemfile.lock /myapp/Gemfile.lock
 
 RUN apk update && \
     apk add --no-cache \
@@ -26,4 +26,10 @@ RUN apk update && \
 
 COPY . .
 
+COPY entrypoint.sh /usr/bin/
+RUN chmod +x /usr/bin/entrypoint.sh
+ENTRYPOINT ["entrypoint.sh"]
+
 EXPOSE 3000
+
+CMD ["rails", "server", "-b", "0.0.0.0"]
